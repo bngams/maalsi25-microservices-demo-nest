@@ -17,13 +17,17 @@
   "workspaces": [
     "service-a",
     "service-b",
+    "service-clients",
+    "service-orders",
     "gateway"
   ],
   "scripts": {
+    "test:artillery": "artillery run artillery-invoice.yml",
     "start:dev": "turbo run start:dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "artillery": "^2.0.27",
     "turbo": "^2.6.1"
   },
   "packageManager": "npm@10.9.3"

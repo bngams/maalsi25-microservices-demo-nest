@@ -8,6 +8,7 @@ export class AppService {
   constructor(
     @Inject('SERVICE_A_CLIENT') private readonly serviceAClient: ClientProxy,
     @Inject('SERVICE_B_CLIENT') private readonly serviceBClient: ClientProxy,
+    @Inject('CLIENTS_SERVICE') private readonly clientsService: ClientProxy,
   ) {}
 
   async getHello(): Promise<string> {
@@ -19,5 +20,9 @@ export class AppService {
       .send<string>({ cmd: 'hello-b' }, {})
       .toPromise(); // TODO: update to lastValueFrom in RxJS 7+
     return `Service A says: ${responseA}, Service B says: ${responseB}`;
+  }
+
+  generateInvoice(clientId: string) {
+    return this.clientsService.send({ cmd: 'generate_invoice' }, { clientId });
   }
 }

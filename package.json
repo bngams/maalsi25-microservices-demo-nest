@@ -15,11 +15,12 @@
   },
   "homepage": "https://github.com/bngams/maalsi25-microservices-demo-nest#readme",
   "workspaces": [
-    "service-a",
-    "service-b",
-    "service-clients",
-    "service-orders",
-    "gateway"
+    "domains/ab/service-a",
+    "domains/ab/service-b",
+    "domains/marketplace/service-clients",
+    "domains/marketplace/service-orders",
+    "domains/ab/gateway-ab",
+    "domains/marketplace/gateway-marketplace"
   ],
   "scripts": {
     "test:artillery": "artillery run artillery-invoice.yml",

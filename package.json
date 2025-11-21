@@ -1,0 +1,30 @@
+{
+  "name": "microservices-demos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bngams/maalsi25-microservices-demo-nest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bngams/maalsi25-microservices-demo-nest/issues"
+  },
+  "homepage": "https://github.com/bngams/maalsi25-microservices-demo-nest#readme",
+  "workspaces": [
+    "service-a",
+    "service-b",
+    "gateway"
+  ],
+  "scripts": {
+    "start:dev": "turbo run start:dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "turbo": "^2.6.1"
+  },
+  "packageManager": "npm@10.9.3"
+}

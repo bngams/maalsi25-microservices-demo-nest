@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConsulModule = void 0;
 const common_1 = require("@nestjs/common");
 const consul_service_1 = require("./consul.service");
+const consul_discovery_service_1 = require("./consul-discovery.service");
 const consul_constants_1 = require("./consul.constants");
 let ConsulModule = ConsulModule_1 = class ConsulModule {
     static register(options) {
@@ -21,8 +22,9 @@ let ConsulModule = ConsulModule_1 = class ConsulModule {
                     useValue: options,
                 },
                 consul_service_1.ConsulService,
+                consul_discovery_service_1.ConsulDiscoveryService,
             ],
-            exports: [consul_service_1.ConsulService],
+            exports: [consul_service_1.ConsulService, consul_discovery_service_1.ConsulDiscoveryService],
             global: false,
         };
     }

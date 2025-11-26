@@ -1,5 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConsulService } from './consul.service';
+import { ConsulDiscoveryService } from './consul-discovery.service';
 import { ConsulModuleOptions } from './consul.interface';
 import { CONSUL_OPTIONS } from './consul.constants';
 
@@ -17,8 +18,9 @@ export class ConsulModule {
           useValue: options,
         },
         ConsulService,
+        ConsulDiscoveryService,
       ],
-      exports: [ConsulService],
+      exports: [ConsulService, ConsulDiscoveryService],
       global: false,
     };
   }

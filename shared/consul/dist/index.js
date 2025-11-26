@@ -16,6 +16,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./consul.module"), exports);
 __exportStar(require("./consul.service"), exports);
+__exportStar(require("./consul-discovery.service"), exports);
 __exportStar(require("./consul.interface"), exports);
 __exportStar(require("./consul.constants"), exports);
 //# sourceMappingURL=index.js.map

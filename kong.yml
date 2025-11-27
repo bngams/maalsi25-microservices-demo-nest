@@ -9,6 +9,16 @@ services:
         paths:
           - /ab # http://localhost:8000/ab
         strip_path: true
+    plugins:
+      - name: jwt
+        config:
+          uri_param_names:
+            - jwt
+          claims_to_verify:
+            - exp
+          key_claim_name: iss
+          secret_is_base64: false
+
   - name: gateway-marketplace
     url: http://host.docker.internal:3300
     routes:
@@ -16,3 +26,12 @@ services:
         paths:
           - /marketplace # http://localhost:8000/marketplace
         strip_path: true
+    plugins:
+      - name: jwt
+        config:
+          uri_param_names:
+            - jwt
+          claims_to_verify:
+            - exp
+          key_claim_name: iss
+          secret_is_base64: false

@@ -18,6 +18,9 @@ export class AppService {
   constructor(private consulDiscovery: ConsulDiscoveryService) {}
 
   async onModuleInit() {
+    setTimeout(() => {
+      console.log('⏳ [Gateway AB] Waiting for Consul to be ready...');
+    }, 1000);
     // Découvrir service-a
     const serviceAUrl = await this.consulDiscovery.getServiceUrl('service-a');
     const [hostA, portA] = this.parseUrl(serviceAUrl);

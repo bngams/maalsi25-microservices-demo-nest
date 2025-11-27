@@ -11,12 +11,21 @@ const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const consul_1 = require("@shared/consul");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            consul_1.ConsulModule.register({
+                serviceName: process.env.SERVICE_NAME || 'service-clients',
+                servicePort: parseInt(process.env.SERVICE_PORT || '3003', 10),
+                serviceHost: process.env.SERVICE_HOST || 'host.docker.internal',
+                healthCheckPath: '/health',
+                healthCheckInterval: '10s',
+                tags: ['domain:marketplace', 'type:tcp'],
+            }),
             microservices_1.ClientsModule.register([
                 {
                     name: 'RABBITMQ_SERVICE',

@@ -85,15 +85,15 @@ cd shared/consul
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@nestjs/common": "^10.0.0",
     "consul": "^1.2.0"
   },
   "devDependencies": {
+    "@nestjs/common": "^10.0.0", // attention à bien vous aligner à la version nest du projet
     "@types/consul": "^0.40.0",
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
-    "@nestjs/common": "^10.0.0"
+    "@nestjs/common": "^10.0.0" // attention à bien vous aligner à la version nest du projet
   }
 }
 ```
@@ -456,14 +456,14 @@ npm ls @shared/consul
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/microservices": "^10.0.0",
-    "@shared/consul": "workspace:*",
+    "@shared/consul": "*",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   }
 }
 ```
 
-**Note** : `workspace:*` indique d'utiliser la version du workspace local.
+**Note** : `*` indique d'utiliser la version du workspace local.
 
 Installez les dépendances :
 
@@ -562,7 +562,7 @@ SERVICE_NAME=service-a SERVICE_PORT=3001 npm run start:dev
 
 ```json
 "dependencies": {
-  "@shared/consul": "workspace:*"
+  "@shared/consul": "*"
 }
 ```
 
@@ -590,7 +590,7 @@ export class AppModule {}
 
 ```json
 "dependencies": {
-  "@shared/consul": "workspace:*"
+  "@shared/consul": "*"
 }
 ```
 
@@ -619,7 +619,7 @@ export class AppModule {}
 
 ```json
 "dependencies": {
-  "@shared/consul": "workspace:*"
+  "@shared/consul": "*"
 }
 ```
 
@@ -769,7 +769,7 @@ export * from './consul.constants';
 
 ```json
 "dependencies": {
-  "@shared/consul": "workspace:*"
+  "@shared/consul": "*"
 }
 ```
 
@@ -972,7 +972,7 @@ Vous avez appris à :
 - ✅ Créer une **bibliothèque partagée** dans un monorepo
 - ✅ Implémenter un **Dynamic Module NestJS** réutilisable
 - ✅ Configurer des **workspaces** pour partager du code
-- ✅ Utiliser `workspace:*` pour les dépendances locales
+- ✅ Utiliser `*` pour les dépendances locales
 - ✅ Appliquer le principe **DRY** (Don't Repeat Yourself)
 - ✅ Simplifier l'intégration de Consul dans tous les services
 - ✅ Créer une API claire et documentée avec TypeScript

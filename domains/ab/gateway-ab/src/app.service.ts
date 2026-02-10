@@ -18,11 +18,10 @@ export class AppService {
   constructor(private consulDiscovery: ConsulDiscoveryService) {}
 
   async onModuleInit() {
-    setTimeout(() => {
-      console.log('⏳ [Gateway AB] Waiting for Consul to be ready...');
-    }, 1000);
-    // Découvrir service-a
-    const serviceAUrl = await this.consulDiscovery.getServiceUrl('service-a');
+    console.log('⏳ [Gateway AB - HTTP] Waiting for services to register...');
+
+    // Retry logic for service discovery (handle race conditions)
+    const serviceAUrl = await this.discoverServiceWithRetry('service-a');
     const [hostA, portA] = this.parseUrl(serviceAUrl);
 
     this.serviceAClient = ClientProxyFactory.create({
@@ -30,8 +29,7 @@ export class AppService {
       options: { host: hostA, port: portA },
     });
 
-    // Découvrir service-b
-    const serviceBUrl = await this.consulDiscovery.getServiceUrl('service-b');
+    const serviceBUrl = await this.discoverServiceWithRetry('service-b');
     const [hostB, portB] = this.parseUrl(serviceBUrl);
 
     this.serviceBClient = ClientProxyFactory.create({
@@ -39,7 +37,30 @@ export class AppService {
       options: { host: hostB, port: portB },
     });
 
-    console.log('✅ [Gateway AB] Dynamic service discovery completed');
+    console.log('✅ [Gateway AB - HTTP] Dynamic service discovery completed');
+  }
+
+  private async discoverServiceWithRetry(
+    serviceName: string,
+    maxRetries = 10,
+    delayMs = 1000,
+  ): Promise<string> {
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        return await this.consulDiscovery.getServiceUrl(serviceName);
+      } catch (error) {
+        if (i === maxRetries - 1) {
+          throw error;
+        }
+        console.log(
+          `⏳ [Gateway AB - HTTP] Service ${serviceName} not ready, retrying... (${i + 1}/${maxRetries})`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
+    }
+    throw new Error(
+      `Failed to discover ${serviceName} after ${maxRetries} retries`,
+    );
   }
 
   private parseUrl(url: string): [string, number] {

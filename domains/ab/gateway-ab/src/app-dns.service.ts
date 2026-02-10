@@ -16,8 +16,12 @@ export class AppDnsService {
   }
 
   async onModuleInit() {
-    // Resolve service-a via Consul DNS
-    const serviceAHost = await this.resolveService('service-a.service.consul');
+    console.log('⏳ [Gateway AB - DNS] Waiting for services to register...');
+
+    // Resolve service-a via Consul DNS with retry
+    const serviceAHost = await this.resolveServiceWithRetry(
+      'service-a.service.consul',
+    );
     this.serviceAClient = ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
@@ -26,8 +30,10 @@ export class AppDnsService {
       },
     });
 
-    // Resolve service-b via Consul DNS
-    const serviceBHost = await this.resolveService('service-b.service.consul');
+    // Resolve service-b via Consul DNS with retry
+    const serviceBHost = await this.resolveServiceWithRetry(
+      'service-b.service.consul',
+    );
     this.serviceBClient = ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
@@ -37,6 +43,29 @@ export class AppDnsService {
     });
 
     console.log('✅ [Gateway AB - DNS] Using Consul DNS for service discovery');
+  }
+
+  private async resolveServiceWithRetry(
+    serviceName: string,
+    maxRetries = 10,
+    delayMs = 1000,
+  ): Promise<string> {
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        return await this.resolveService(serviceName);
+      } catch (error) {
+        if (i === maxRetries - 1) {
+          throw error;
+        }
+        console.log(
+          `⏳ [Gateway AB - DNS] Service ${serviceName} not ready, retrying... (${i + 1}/${maxRetries})`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
+    }
+    throw new Error(
+      `Failed to resolve ${serviceName} after ${maxRetries} retries`,
+    );
   }
 
   private async resolveService(serviceName: string): Promise<string> {

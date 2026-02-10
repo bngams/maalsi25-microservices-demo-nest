@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AppDnsService } from './app-dns.service';
 // import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConsulModule } from '@shared/consul/dist/consul.module';
-import { AppDnsService } from './app-dns.service';
+
+// Toggle between DNS and HTTP-based service discovery
+// Set CONSUL_DISCOVERY_MODE=dns to use DNS-based discovery (for Docker/K8s)
+// Set CONSUL_DISCOVERY_MODE=http (default) to use HTTP API-based discovery (for local dev)
+const discoveryMode = process.env.CONSUL_DISCOVERY_MODE || 'http';
 
 @Module({
   //imports: [
@@ -37,4 +42,10 @@ import { AppDnsService } from './app-dns.service';
   controllers: [AppController],
   providers: [AppService, AppDnsService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log(
+      `🔍 [Gateway AB] Using ${discoveryMode.toUpperCase()} service discovery mode`,
+    );
+  }
+}

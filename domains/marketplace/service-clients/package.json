@@ -5,8 +5,9 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "nest start",
-    "start:dev": "nest start --watch",
-    "build": "nest build"
+    "start:dev": "npm run clean && nest start --watch",
+    "build": "nest build",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

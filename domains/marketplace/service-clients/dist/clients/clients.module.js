@@ -6,22 +6,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.ClientsModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
-const app_controller_1 = require("./app.controller");
-const orders_module_1 = require("./orders/orders.module");
-let AppModule = class AppModule {
+const clients_service_1 = require("./clients.service");
+const clients_controller_1 = require("./clients.controller");
+const client_schema_1 = require("./client.schema");
+let ClientsModule = class ClientsModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+exports.ClientsModule = ClientsModule;
+exports.ClientsModule = ClientsModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRoot('mongodb://admin:admin@localhost:27017/orders_db?authSource=admin'),
-            orders_module_1.OrdersModule,
+            mongoose_1.MongooseModule.forFeature([{ name: client_schema_1.Client.name, schema: client_schema_1.ClientSchema }]),
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [],
+        controllers: [clients_controller_1.ClientsController],
+        providers: [clients_service_1.ClientsService],
+        exports: [clients_service_1.ClientsService],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], ClientsModule);
+//# sourceMappingURL=clients.module.js.map

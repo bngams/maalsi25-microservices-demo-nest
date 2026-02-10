@@ -14,6 +14,17 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           port: 3003,
         },
       },
+      {
+        name: 'ORDERS_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://admin:admin@localhost:5672'],
+          queue: 'invoices',
+          queueOptions: {
+            durable: true,
+          },
+        },
+      },
     ]),
   ],
   controllers: [AppController],

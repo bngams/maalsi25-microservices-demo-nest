@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConsulModule } from '@shared/consul';
+import { ClientsModule as ClientsDomainModule } from './clients/clients.module';
 
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://admin:admin@localhost:27017/clients_db?authSource=admin'),
     ConsulModule.register({
       serviceName: process.env.SERVICE_NAME || 'service-clients',
       servicePort: parseInt(process.env.SERVICE_PORT || '3003', 10),
@@ -27,6 +30,7 @@ import { ConsulModule } from '@shared/consul';
         },
       },
     ]),
+    ClientsDomainModule,
   ],
   controllers: [AppController],
   providers: [AppService],

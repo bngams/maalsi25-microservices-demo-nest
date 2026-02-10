@@ -9,15 +9,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
+const mongoose_1 = require("@nestjs/mongoose");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const consul_1 = require("@shared/consul");
+const clients_module_1 = require("./clients/clients.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            mongoose_1.MongooseModule.forRoot('mongodb://admin:admin@localhost:27017/clients_db?authSource=admin'),
             consul_1.ConsulModule.register({
                 serviceName: process.env.SERVICE_NAME || 'service-clients',
                 servicePort: parseInt(process.env.SERVICE_PORT || '3003', 10),
@@ -39,6 +42,7 @@ exports.AppModule = AppModule = __decorate([
                     },
                 },
             ]),
+            clients_module_1.ClientsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
